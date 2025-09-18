@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import type { Movie } from "@/data/movies";
 import { ChevronLeft, ChevronRight, CirclePlus, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { randomPoster } from "@/lib/posters";
 
 function MovieCard({
   movie,
@@ -17,7 +18,7 @@ function MovieCard({
   // Only the first few thumbnails should be eager to avoid network congestion
   const isPriority = index < 8;
   const [loaded, setLoaded] = useState(false);
-  const src = (movie.poster || "").trim();
+  const src = (movie.poster && movie.poster.trim()) || randomPoster(index);
   useEffect(() => {
     if (!src) setLoaded(true);
   }, [src]);
@@ -252,7 +253,7 @@ export default function Row({
                 {current.trailer ? (
                   <video
                     src={current.trailer}
-                    poster={current.poster || current.backdrop}
+                    poster={(current.poster && current.poster.trim()) || current.backdrop || randomPoster()}
                     controls
                     playsInline
                     preload="auto"
@@ -260,7 +261,7 @@ export default function Row({
                   />
                 ) : (
                   <img
-                    src={current.poster || current.backdrop}
+                    src={(current.poster && current.poster.trim()) || current.backdrop || randomPoster()}
                     className="h-full w-full object-cover"
                     alt={current.title}
                   />
