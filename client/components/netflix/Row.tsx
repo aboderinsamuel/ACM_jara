@@ -253,7 +253,11 @@ export default function Row({
                 {current.trailer ? (
                   <video
                     src={current.trailer}
-                    poster={(current.poster && current.poster.trim()) || current.backdrop || randomPoster()}
+                    poster={
+                      (current.poster && current.poster.trim()) ||
+                      current.backdrop ||
+                      randomPoster()
+                    }
                     controls
                     playsInline
                     preload="auto"
@@ -261,7 +265,11 @@ export default function Row({
                   />
                 ) : (
                   <img
-                    src={(current.poster && current.poster.trim()) || current.backdrop || randomPoster()}
+                    src={
+                      (current.poster && current.poster.trim()) ||
+                      current.backdrop ||
+                      randomPoster()
+                    }
                     className="h-full w-full object-cover"
                     alt={current.title}
                   />
