@@ -14,7 +14,7 @@ export default function Layout({ children }: PropsWithChildren) {
           <span>Jobs</span>
           <span>Cookie Preferences</span>
         </div>
-        <div className="mt-6">© {new Date().getFullYear()} Netflix Clone</div>
+        <div className="mt-6">© {new Date().getFullYear()} JARA</div>
       </footer>
     </div>
   );
