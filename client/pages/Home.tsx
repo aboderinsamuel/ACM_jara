@@ -69,12 +69,13 @@ async function discoverPosters(): Promise<string[]> {
 
 export default function Home() {
   const POSTER_CACHE_KEY = "available_posters_v2";
-  const POSTER_CACHE_VERSION = 4;
+  const POSTER_CACHE_VERSION = 5;
 
   const isBannedPoster = (url: string) =>
     /\/ProfilePic\//i.test(url) ||
     /Netflix%20Profile%20Meme/i.test(url) ||
-    /Netflix Profile Meme/i.test(url);
+    /Netflix Profile Meme/i.test(url) ||
+    /\/moviePosters\/image1\.(webp|jpg|jpeg|png|avif)$/i.test(url);
 
   const [posters, setPosters] = useState<string[]>(() => {
     try {
@@ -99,8 +100,9 @@ export default function Home() {
   // Ensure variety across devices: if discovery yields too few images,
   // augment with a diversified placeholder pool (remote seeds)
   const postersPool = useMemo(() => {
-    const pool = posters.length >= 5 ? posters : getPosterPool();
-    return pool.filter((u) => !isBannedPoster(u));
+    // Prefer discovered local posters; fall back to remote seed pool
+    const poolSource = posters.length >= 5 ? posters : getPosterPool();
+    return poolSource.filter((u) => !isBannedPoster(u));
   }, [posters]);
 
   const [seed] = useState(() => {

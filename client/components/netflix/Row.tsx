@@ -17,6 +17,7 @@ function MovieCard({
   // Only the first few thumbnails should be eager to avoid network congestion
   const isPriority = index < 8;
   const [loaded, setLoaded] = useState(false);
+  const src = (movie.poster || "").trim();
   return (
     <div
       role="button"
@@ -24,21 +25,25 @@ function MovieCard({
       onClick={() => onOpenDetails(movie)}
       className="group relative aspect-[2/3] w-32 sm:w-36 md:w-40 lg:w-44 shrink-0 rounded overflow-hidden transition-transform duration-300 hover:scale-105 hover:z-10"
     >
+      {/* Base neutral background to avoid blank on missing images */}
+      <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 to-neutral-800" />
       {/* Shimmer placeholder */}
       <div
         aria-hidden
         className={`absolute inset-0 shimmer bg-neutral-800 ${loaded ? "opacity-0" : "opacity-100"} transition-opacity duration-300 pointer-events-none`}
       />
-      <img
-        src={movie.poster}
-        alt={movie.title}
-        className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
-        loading={isPriority ? "eager" : "lazy"}
-        fetchPriority={isPriority ? "high" : "auto"}
-        decoding="async"
-        onLoad={() => setLoaded(true)}
-        onError={() => setLoaded(true)}
-      />
+      {src ? (
+        <img
+          src={src}
+          alt={movie.title}
+          className={`h-full w-full object-cover transition-opacity duration-300 ${loaded ? "opacity-100" : "opacity-0"}`}
+          loading={isPriority ? "eager" : "lazy"}
+          fetchPriority={isPriority ? "high" : "auto"}
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setLoaded(true)}
+        />
+      ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="absolute inset-x-2 bottom-2 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="flex gap-1.5">
