@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import HeroVideo from "@/components/netflix/HeroVideo";
 import Row from "@/components/netflix/Row";
 import { rows as baseRows, type Movie } from "@/data/movies";
+import { getPosterPool } from "@/lib/posters";
 
 function mulberry32(a: number) {
   return function () {
@@ -95,6 +96,13 @@ export default function Home() {
     return [];
   });
 
+  // Ensure variety across devices: if discovery yields too few images,
+  // augment with a diversified placeholder pool (remote seeds)
+  const postersPool = useMemo(() => {
+    const pool = posters.length >= 5 ? posters : getPosterPool();
+    return pool.filter((u) => !isBannedPoster(u));
+  }, [posters]);
+
   const [seed] = useState(() => {
     const s = localStorage.getItem("home_seed");
     if (s) return parseInt(s, 10) || Math.floor(Math.random() * 1e9);
@@ -150,13 +158,13 @@ export default function Home() {
       movies: shuffle(r.movies, prng).map((m, idx) =>
         withRandomPoster(
           m,
-          posters[
-            (idx + Math.floor(prng() * 1000)) % Math.max(1, posters.length)
+          postersPool[
+            (idx + Math.floor(prng() * 1000)) % Math.max(1, postersPool.length)
           ],
         ),
       ),
     }));
-  }, [posters, seed]);
+  }, [postersPool, seed]);
 
   function withRandomPoster(movie: Movie, posterUrl?: string): Movie {
     if (!posterUrl) return movie;
@@ -183,11 +191,11 @@ export default function Home() {
     updateExploreArrows();
     el.addEventListener("scroll", updateExploreArrows);
     return () => el.removeEventListener("scroll", updateExploreArrows);
-  }, [posters.length]);
+  }, [postersPool.length]);
 
   const explorePosters = useMemo(
-    () => shuffle(posters, rng).slice(0, Math.min(40, posters.length)),
-    [posters, rng],
+    () => shuffle(postersPool, rng).slice(0, Math.min(40, postersPool.length)),
+    [postersPool, rng],
   );
 
   const scrollExplore = (dir: -1 | 1) => () => {
