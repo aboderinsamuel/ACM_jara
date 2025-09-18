@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
+import { randomPoster } from "@/lib/posters";
 import {
   Bitcoin,
   CreditCard,
@@ -206,7 +207,7 @@ export default function PaymentPage() {
               {/* Poster / cover with fallback */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={paymentLink.imageUrl || "/moviePosters/image1.webp"}
+                src={paymentLink.imageUrl || randomPoster()}
                 alt={paymentLink.title}
                 className="w-full h-48 object-cover rounded"
               />

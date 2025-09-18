@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { api, type IPaymentLink as PaymentLink } from "@/lib/api";
+import { randomPoster } from "@/lib/posters";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { DollarSign, ExternalLink } from "lucide-react";
@@ -113,7 +114,7 @@ export default function JaraPage() {
     );
   }
 
-  const cover = landing.coverImageUrl || "/moviePosters/image1.webp";
+  const cover = landing.coverImageUrl || randomPoster();
   const avatar =
     landing.creator?.image || "/ProfilePic/Netflix%20Profile%20Meme.jpg";
 
