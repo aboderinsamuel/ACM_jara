@@ -165,7 +165,6 @@ export default function Home() {
       ),
     }));
   }, [postersPool, seed]);
-
   function withRandomPoster(movie: Movie, posterUrl?: string): Movie {
     if (!posterUrl) return movie;
     return { ...movie, poster: posterUrl };
@@ -284,6 +283,9 @@ export default function Home() {
 function ExplorePoster({ src, index }: { src: string; index: number }) {
   const [loaded, setLoaded] = useState(false);
   const isPriority = index < 10; // a few early posters can be eager
+  useEffect(() => {
+    if (!src) setLoaded(true);
+  }, [src]);
   return (
     <div className="relative aspect-[2/3] w-32 sm:w-36 md:w-40 lg:w-44 shrink-0 overflow-hidden rounded ring-1 ring-white/10">
       <div

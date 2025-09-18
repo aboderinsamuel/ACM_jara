@@ -18,6 +18,9 @@ function MovieCard({
   const isPriority = index < 8;
   const [loaded, setLoaded] = useState(false);
   const src = (movie.poster || "").trim();
+  useEffect(() => {
+    if (!src) setLoaded(true);
+  }, [src]);
   return (
     <div
       role="button"
