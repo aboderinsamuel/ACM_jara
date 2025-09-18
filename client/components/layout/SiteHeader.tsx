@@ -276,6 +276,9 @@ export default function SiteHeader() {
                   src={avatarSrc}
                   alt="Profile"
                   className="h-8 w-8 rounded object-cover ring-1 ring-white/20 hover:ring-white/40 transition"
+                  onError={() =>
+                    setAvatarSrc("/ProfilePic/Netflix%20Profile%20Meme.jpg")
+                  }
                 />
               </Link>
               <button

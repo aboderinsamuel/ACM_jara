@@ -6,6 +6,8 @@
   "routes": [
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/moviePosters/(.*)", "dest": "/moviePosters/$1" },
+    { "src": "/ProfilePic/(.*)", "dest": "/ProfilePic/$1" },
+    { "src": "/profilepic/(.*)", "dest": "/ProfilePic/$1" },
     { "src": "/videos/(.*)", "dest": "/videos/$1" },
     { "src": "/favicon.ico", "dest": "/favicon.ico" },
     { "src": "/robots.txt", "dest": "/robots.txt" },
