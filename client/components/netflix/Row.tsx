@@ -5,13 +5,17 @@ import { Button } from "@/components/ui/button";
 
 function MovieCard({
   movie,
+  index,
   onPlay,
   onOpenDetails,
 }: {
   movie: Movie;
+  index: number;
   onPlay: (m: Movie) => void;
   onOpenDetails: (m: Movie) => void;
 }) {
+  // Only the first few thumbnails should be eager to avoid network congestion
+  const isPriority = index < 8;
   return (
     <div
       role="button"
@@ -23,6 +27,9 @@ function MovieCard({
         src={movie.poster}
         alt={movie.title}
         className="h-full w-full object-cover"
+        loading={isPriority ? "eager" : "lazy"}
+        fetchPriority={isPriority ? "high" : "auto"}
+        decoding="async"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="absolute inset-x-2 bottom-2 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -201,6 +208,7 @@ export default function Row({
             <MovieCard
               key={`${m.id}-${idx}`}
               movie={m}
+              index={idx}
               onPlay={handlePlay}
               onOpenDetails={openDetails}
             />
@@ -231,6 +239,7 @@ export default function Row({
                     poster={current.backdrop}
                     controls
                     playsInline
+                    preload="auto"
                     className="h-full w-full object-cover"
                   />
                 ) : (

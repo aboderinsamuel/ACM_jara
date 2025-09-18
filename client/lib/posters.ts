@@ -15,12 +15,9 @@ export function getPosterPool(): string[] {
     }
   } catch {}
 
-  // Fallback: generate a set of remote placeholder posters
-  const placeholders = Array.from({ length: 30 }, (_, i) =>
-    `https://picsum.photos/seed/jara-${i + 1}/300/450`,
-  );
-  // Also include the local default if present for variety
-  return ["/moviePosters/image1.webp", ...placeholders];
+  // Fallback: return only the local default if cache not ready yet
+  // This will be replaced quickly once App preloads and caches real posters
+  return ["/moviePosters/image1.webp"];
 }
 
 export function randomPoster(seed?: number): string {
