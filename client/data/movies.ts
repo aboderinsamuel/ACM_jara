@@ -14,8 +14,8 @@ export type Movie = {
 const u = (id: string, w = 1200) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
 
-// Placeholder poster for all movie cards
-const placeholderPoster = "/moviePosters/image1.webp";
+// Placeholder poster for all movie cards (empty; real posters assigned later)
+const placeholderPoster = "";
 
 export const featured: Movie = {
   id: "ftd-1",

@@ -15,14 +15,14 @@ export function getPosterPool(): string[] {
     }
   } catch {}
 
-  // Fallback: return only the local default if cache not ready yet
-  // This will be replaced quickly once App preloads and caches real posters
-  return ["/moviePosters/image1.webp"];
+  // Fallback: return empty if cache not ready yet.
+  // Callers should handle empty state (e.g., shimmer/neutral block).
+  return [];
 }
 
 export function randomPoster(seed?: number): string {
   const pool = getPosterPool();
-  if (pool.length === 0) return "/moviePosters/image1.webp";
+  if (pool.length === 0) return "";
   const idx = seededIndex(pool.length, seed);
   return pool[idx];
 }

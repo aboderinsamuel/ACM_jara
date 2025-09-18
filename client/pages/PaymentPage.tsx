@@ -204,13 +204,17 @@ export default function PaymentPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {/* Poster / cover with fallback */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={paymentLink.imageUrl || randomPoster()}
-                alt={paymentLink.title}
-                className="w-full h-48 object-cover rounded"
-              />
+              {/* Poster / cover without image placeholder */}
+              {paymentLink.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={paymentLink.imageUrl}
+                  alt={paymentLink.title}
+                  className="w-full h-48 object-cover rounded"
+                />
+              ) : (
+                <div className="w-full h-48 rounded bg-gradient-to-br from-neutral-800 to-neutral-900 ring-1 ring-white/10" />
+              )}
               <p className="text-white/80">{paymentLink.description}</p>
               <div className="flex items-center justify-between p-4 bg-white/5 rounded">
                 <span className="text-lg font-semibold">Amount</span>

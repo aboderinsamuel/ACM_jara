@@ -64,7 +64,7 @@ async function discoverPosters(): Promise<string[]> {
   }
 
   const unique = Array.from(new Set(found));
-  return unique.length ? unique : ["/moviePosters/image1.webp"];
+  return unique;
 }
 
 export default function Home() {
@@ -112,9 +112,7 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const stale =
-      posters.length === 0 ||
-      (posters.length === 1 && posters[0].includes("image1.webp"));
+    const stale = posters.length === 0;
     if (!stale) return;
     (async () => {
       const list = (await discoverPosters()).filter((u) => !isBannedPoster(u));
@@ -211,7 +209,7 @@ export default function Home() {
       {/* Netflix-style division between hero and content */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black"></div>
-        <div className="h-20"></div>
+        <div className="h-12 sm:h-14"></div>
       </div>
       {/* Explore row (horizontal scroll) */}
       {explorePosters.length > 0 ? (
@@ -266,18 +264,7 @@ export default function Home() {
               }}
             >
               {explorePosters.map((src, i) => (
-                <div
-                  key={`${src}-${i}`}
-                  className="relative aspect-[2/3] w-32 sm:w-36 md:w-40 lg:w-44 shrink-0 overflow-hidden rounded ring-1 ring-white/10"
-                >
-                  <img
-                    src={src}
-                    alt="Poster"
-                    className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 hover:opacity-100 transition-opacity" />
-                </div>
+                <ExplorePoster key={`${src}-${i}`} src={src} index={i} />
               ))}
             </div>
           </div>
@@ -288,6 +275,30 @@ export default function Home() {
           <Row key={r.title} title={r.title} movies={r.movies} />
         ))}
       </div>
+    </div>
+  );
+}
+
+function ExplorePoster({ src, index }: { src: string; index: number }) {
+  const [loaded, setLoaded] = useState(false);
+  const isPriority = index < 10; // a few early posters can be eager
+  return (
+    <div className="relative aspect-[2/3] w-32 sm:w-36 md:w-40 lg:w-44 shrink-0 overflow-hidden rounded ring-1 ring-white/10">
+      <div
+        aria-hidden
+        className={`absolute inset-0 shimmer bg-neutral-800 ${loaded ? "opacity-0" : "opacity-100"} transition-opacity duration-300 pointer-events-none`}
+      />
+      <img
+        src={src}
+        alt="Poster"
+        className={`h-full w-full object-cover transition duration-500 hover:scale-105 ${loaded ? "opacity-100" : "opacity-0"}`}
+        loading={isPriority ? "eager" : "lazy"}
+        fetchPriority={isPriority ? "high" : "auto"}
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(true)}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 hover:opacity-100 transition-opacity" />
     </div>
   );
 }

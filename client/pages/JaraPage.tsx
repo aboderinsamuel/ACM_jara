@@ -22,7 +22,7 @@ export default function JaraPage() {
       description:
         "Welcome to the demo creator page. Explore sample movies and try the flow.",
       isPublished: true,
-      coverImageUrl: "/moviePosters/image1.webp",
+      coverImageUrl: randomPoster(),
       creator: {
         id: "demo-creator",
         name: "Demo Creator",
@@ -38,7 +38,7 @@ export default function JaraPage() {
           description: "An exciting journey into the world of Jara.",
           price: 3.99,
           currency: "USD",
-          imageUrl: "/moviePosters/image1.webp",
+          imageUrl: randomPoster(),
           isPublished: true,
         },
         {
@@ -49,7 +49,7 @@ export default function JaraPage() {
           description: "Another captivating story brought to life.",
           price: 4.99,
           currency: "USD",
-          imageUrl: "/moviePosters/image1.webp",
+          imageUrl: randomPoster(),
           isPublished: true,
         },
       ],
@@ -121,12 +121,16 @@ export default function JaraPage() {
   return (
     <div className="min-h-[calc(100vh-4rem)]">
       <div className="relative h-56 sm:h-72">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={cover}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover opacity-40"
-        />
+        {cover ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={cover}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-40"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-b from-neutral-900 to-black" />
+        )}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black" />
       </div>
       <div className="px-4 sm:px-8 lg:px-12 -mt-16 relative z-10">
